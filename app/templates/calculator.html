@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/img/favicon.ico">
+
+    <title>Simple scientific calculator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <script src="static/js/angular.js"></script>
+
+    <script>
+        angular.module('myApp', [])
+            .controller('HomeCtrl', function($scope, $http) {
+
+				$scope.info = {};
+				$scope.results = [];
+				$scope.expression = '';
+
+				$scope.calculateExpression = function(){
+
+					$http({
+						method: 'POST',
+						url: '/calculate',
+						data: {expression:$scope.expression}
+					}).then(function(response) {
+                        $scope.info = response.data;
+                        $scope.results.unshift(response.data);
+                        $scope.expression = '';
+					}, function(error) {
+						console.log(error);
+					});
+				}
+
+            })
+    </script>
+
+</head>
+
+<body ng-controller="HomeCtrl">
+<div class="row">
+    <p></p>
+    <div class="container col-lg-2">
+    </div>
+    <div class="container col-lg-8">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <fieldset ng-disabled="disableGetVoters" >
+                        <button type="button" class="btn btn-primary" ng-click="calculateExpression()" >Calculate</button>
+                    </fieldset>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Simple Scientific Calculator</h3>
+        </div>
+        <form ng-submit="calculateExpression()" >
+                <input type="text" class="form-control" placeholder="Expression" size=100 id="Expression" ng-model="expression" />
+        </form>
+        <p></p>
+
+        <div class="bs-example" data-example-id="panel-without-body-with-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">Results list</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Expression</th>
+                            <th>Result</th>
+                            <th>Status</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="result in results track by $index">
+                            <th scope="row">{{ '{{$index+1}}' }}</th>
+                            <td>{{ '{{result.expression}}' }}</td>
+                            <td>{{ '{{result.value}}' }}</td>
+                            <td>{{ '{{result.status}}' }}</td>
+                            <td>{{ '{{result.message}}' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
