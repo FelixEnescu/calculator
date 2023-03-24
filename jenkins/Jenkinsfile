@@ -1,0 +1,35 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'Dockerfile.build'
+            dir 'docker/image'            
+            additionalBuildArgs  '--build-arg version=1.0.2'
+            args '-v /home/jenkins/.kube:/home/jenkins/.kube/'
+        }
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+        timestamps()
+        ansiColor('xterm')
+    }
+
+    environment {
+        PROJECT_FOLDER_PATH = 'docker/'
+        KUBECONFIG = '/home/jenkins/.kube/config'
+    }
+
+    stages {
+        stage('Kubectl check') {
+            steps {
+                dir(PROJECT_FOLDER_PATH) {
+                    sh """
+                    export KUBECONFIG=${KUBECONFIG}
+                    kubectl get all
+                    """
+                }
+            }
+        }   
+    }
+}
