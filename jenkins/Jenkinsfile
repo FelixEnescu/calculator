@@ -74,8 +74,10 @@ pipeline {
         stage('Push image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: DOCKER_CRED, passwordVariable: 'pass', usernameVariable: 'user')]) {
-                    sh "echo ${pass} | docker login ghcr.io -u ${user} --password-stdin"
-                    sh "docker push ${FINAL_IMAGE_NAME}"
+                    sh """
+                    echo ${pass} | docker login ghcr.io -u ${user} --password-stdin
+                    docker push ${FINAL_IMAGE_NAME}
+                    """
                 }
             }
         }    
