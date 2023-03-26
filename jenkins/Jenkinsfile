@@ -109,6 +109,7 @@ pipeline {
                     export KUBECONFIG=${KUBECONFIG}
                     export GITHUB_REGISTRY_SECRET=${GITHUB_REGISTRY_SECRET}
                     export FINAL_IMAGE_NAME=${FINAL_IMAGE_NAME}
+                    cat deployment.yaml
                     kubectl delete -f deployment.yaml
                     sleep 5
                     kubectl apply -f deployment.yaml
