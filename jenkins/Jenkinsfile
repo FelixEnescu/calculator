@@ -71,15 +71,14 @@ pipeline {
             }
         }
 
-        // stage('Push image') {
-        //     when { expression { BRANCH_NAME == 'master'}}
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: DOCKER_CRED, passwordVariable: 'pass', usernameVariable: 'user')]) {
-        //             sh "echo ${pass} | docker login ghcr.io -u ${user} --password-stdin"
-        //             sh "docker push ${FINAL_IMAGE_NAME}"
-        //         }
-        //     }
-        // }    
+        stage('Push image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: DOCKER_CRED, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    sh "echo ${pass} | docker login ghcr.io -u ${user} --password-stdin"
+                    sh "docker push ${FINAL_IMAGE_NAME}"
+                }
+            }
+        }    
 
         stage('Kubectl check') {
             steps {
