@@ -18,14 +18,33 @@ pipeline {
     environment {
         APP_PATH = "calc_app/"
         KUBECONFIG = '/home/jenkins/.kube/config'
+        DOCKER_REGISTRY = "ghcr.io/lodisav-devops"
+        DOCKER_CRED = 'github_PAT'
+        TAG = "latest"
     }
 
     stages {
+        stage('Prepare') {
+            steps {
+                script {
+                    println("BRANCH - ${BRANCH_NAME}")
+                    println("PRID - ${env.CHANGE_ID}")
+                    if (BRANCH_NAME == 'master') {
+                        TAG = 'latest'
+                    } else {
+                        TAG = env.CHANGE_ID
+                    }
+                    IMAGE_NAME = "calculator:${TAG}"
+                    FINAL_IMAGE_NAME = "${DOCKER_REGISTRY}/${IMAGE_NAME}"
+                }
+            }
+        }
+        
         stage('Build') {
             steps {
                 dir(APP_PATH) {
                     sh """
-                    docker build -t test -f Dockerfile .
+                    docker build -t ${IMAGE_NAME} -f Dockerfile .
                     """
                 }
             }
@@ -35,11 +54,32 @@ pipeline {
             steps {
                 dir(APP_PATH) {
                     sh """
-                    docker run test pytest
+                    docker run ${IMAGE_NAME} pytest
                     """
                 }
             }
         }
+
+        stage('Create image') {
+            steps {                
+                dir(APP_PATH) {
+                    sh"""
+                    docker build -t ${FINAL_IMAGE_NAME} -f Dockerfile .
+                    docker images                    
+                    """
+                }                
+            }
+        }
+
+        // stage('Push image') {
+        //     when { expression { BRANCH_NAME == 'master'}}
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: DOCKER_CRED, passwordVariable: 'pass', usernameVariable: 'user')]) {
+        //             sh "echo ${pass} | docker login ghcr.io -u ${user} --password-stdin"
+        //             sh "docker push ${FINAL_IMAGE_NAME}"
+        //         }
+        //     }
+        // }    
 
         stage('Kubectl check') {
             steps {
