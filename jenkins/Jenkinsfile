@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile.build'
-            dir 'calculator/jenkins/image/'            
+            dir 'jenkins/image/'            
             additionalBuildArgs  '--build-arg version=1.0.2'
             args '-v /home/jenkins/.kube:/home/jenkins/.kube/'
         }
