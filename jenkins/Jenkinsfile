@@ -5,7 +5,6 @@ pipeline {
             dir 'jenkins/image/'            
             additionalBuildArgs  '--build-arg version=1.0.2'
             args '-v /home/jenkins/.kube:/home/jenkins/.kube/ -u root:root -v /var/run/docker.sock:/var/run/docker.sock'
-            // args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
