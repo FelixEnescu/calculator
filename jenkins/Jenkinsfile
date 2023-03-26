@@ -115,9 +115,9 @@ pipeline {
                     sed -i "s/IMAGE_NAME/${IMAGE_NAME}/g" deployment.yaml
                     cat deployment.yaml
                     kubectl delete -f deployment.yaml
-                    sleep 5
-                    kubectl apply -f deployment.yaml
                     sleep 15
+                    kubectl apply -f deployment.yaml
+                    sleep 30
                     kubectl get all
                     """
                 }
