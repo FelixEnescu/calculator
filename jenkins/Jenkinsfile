@@ -5,6 +5,7 @@ pipeline {
             dir 'jenkins/image/'            
             additionalBuildArgs  '--build-arg version=1.0.2'
             args '-v /home/jenkins/.kube:/home/jenkins/.kube/'
+            args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
@@ -25,7 +26,7 @@ pipeline {
             steps {
                 dir(APP_PATH) {
                     sh """
-                    sudo docker build -t test -f Dockerfile .
+                    docker build -t test -f Dockerfile .
                     """
                 }
             }
