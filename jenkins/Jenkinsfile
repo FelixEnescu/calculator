@@ -43,7 +43,7 @@ pipeline {
 
         stage('Kubectl check') {
             steps {
-                dir(PROJECT_FOLDER_PATH) {
+                dir(APP_PATH) {
                     sh """
                     export KUBECONFIG=${KUBECONFIG}
                     kubectl get all
