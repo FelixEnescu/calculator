@@ -16,7 +16,7 @@ spec:
       - name: GITHUB_REGISTRY_SECRET
       containers:
       - name: calc
-        image: FINAL_IMAGE_NAME
+        image: GITHUB_REGISTRY/GITHUB_NAME_REPO/IMAGE_NAME
         resources:
           requests:
             memory: "64Mi"
