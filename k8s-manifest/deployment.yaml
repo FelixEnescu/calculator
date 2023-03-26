@@ -13,10 +13,10 @@ spec:
         app: calc
     spec:
       imagePullSecrets:
-      - name: ${GITHUB_REGISTRY_SECRET}
+      - name: GITHUB_REGISTRY_SECRET
       containers:
       - name: calc
-        image: ${FINAL_IMAGE_NAME}
+        image: FINAL_IMAGE_NAME
         resources:
           requests:
             memory: "64Mi"
