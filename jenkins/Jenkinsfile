@@ -61,13 +61,20 @@ pipeline {
         }
 
         stage('Create image') {
-            steps {                
-                dir(APP_PATH) {
-                    sh"""
-                    docker build -t ${FINAL_IMAGE_NAME} -f Dockerfile .
-                    docker images                    
-                    """
-                }                
+            steps {   
+                script {
+                    def apply = false
+                    input message: 'Confirm that the tests completed successfully?', ok: 'Apply'
+                    apply = true
+                    if (apply) {
+                        dir(APP_PATH) {
+                            sh"""
+                            docker build -t ${FINAL_IMAGE_NAME} -f Dockerfile .
+                            docker images                    
+                            """
+                        }
+                    }
+                }                                
             }
         }
 
