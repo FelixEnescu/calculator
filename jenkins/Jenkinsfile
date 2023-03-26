@@ -38,6 +38,8 @@ pipeline {
                     // }
                     IMAGE_NAME = "calculator:${TAG}"
                     FINAL_IMAGE_NAME = "${DOCKER_REGISTRY}/${IMAGE_NAME}"
+                    GITHUB_REGISTRY = "ghcr.io"
+                    GITHUB_NAME_REPO = "lodisav-devops"
                 }
             }
         }
@@ -110,7 +112,7 @@ pipeline {
                     export GITHUB_REGISTRY_SECRET=${GITHUB_REGISTRY_SECRET}
                     export FINAL_IMAGE_NAME=${FINAL_IMAGE_NAME}
                     sed -i "s/GITHUB_REGISTRY_SECRET/${GITHUB_REGISTRY_SECRET}/g" deployment.yaml
-                    sed -i "s/FINAL_IMAGE_NAME/${FINAL_IMAGE_NAME}/g" deployment.yaml
+                    sed -i "s/FINAL_IMAGE_NAME/${GITHUB_REGISTRY}\/${GITHUB_NAME_REPO}\/${IMAGE_NAME}/g" deployment.yaml
                     cat deployment.yaml
                     kubectl delete -f deployment.yaml
                     sleep 5
