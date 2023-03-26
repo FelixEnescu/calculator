@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calc
+spec:
+  selector:
+    matchLabels:
+      app: calc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: calc
+    spec:
+      imagePullSecrets:
+      - name: ${GITHUB_REGISTRY_SECRET}
+      containers:
+      - name: calc
+        image: ${FINAL_IMAGE_NAME}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 5000

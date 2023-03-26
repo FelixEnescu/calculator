@@ -4,7 +4,7 @@ pipeline {
             filename 'Dockerfile.build'
             dir 'jenkins/image/'            
             additionalBuildArgs  '--build-arg version=1.0.2'
-            args '-v /home/jenkins/.kube:/home/jenkins/.kube/ -u root:root -v /var/run/docker.sock:/var/run/docker.sock -v /home/jenkins/k8s-manifest:/home/jenkins/k8s-manifest/'
+            args '-v /home/jenkins/.kube:/home/jenkins/.kube/ -u root:root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
@@ -17,7 +17,7 @@ pipeline {
 
     environment {
         APP_PATH = "calc_app/"
-        MANIFEST_PATH = '/home/jenkins/k8s-manifest/'
+        MANIFEST_PATH = "k8s-manifest/"
         KUBECONFIG = '/home/jenkins/.kube/config'
         DOCKER_REGISTRY = "ghcr.io/lodisav-devops"
         DOCKER_CRED = 'github_PAT'
