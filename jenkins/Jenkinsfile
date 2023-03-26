@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile.build'
-            dir 'docker/image'            
+            dir 'calculator/jenkins/image/'            
             additionalBuildArgs  '--build-arg version=1.0.2'
             args '-v /home/jenkins/.kube:/home/jenkins/.kube/'
         }
@@ -16,20 +16,40 @@ pipeline {
     }
 
     environment {
-        PROJECT_FOLDER_PATH = 'docker/'
+        APP_PATH = "calc_app/"
         KUBECONFIG = '/home/jenkins/.kube/config'
     }
 
     stages {
-        stage('Kubectl check') {
+        stage('Build') {
             steps {
-                dir(PROJECT_FOLDER_PATH) {
+                dir(APP_PATH) {
                     sh """
-                    export KUBECONFIG=${KUBECONFIG}
-                    kubectl get all
+                    docker build -t test -f Dockerfile .
                     """
                 }
             }
-        }   
+        }
+
+        stage('Test') {
+            steps {
+                dir(APP_PATH) {
+                    sh """
+                    docker run test pytest
+                    """
+                }
+            }
+        }
+
+        // stage('Kubectl check') {
+        //     steps {
+        //         dir(PROJECT_FOLDER_PATH) {
+        //             sh """
+        //             export KUBECONFIG=${KUBECONFIG}
+        //             kubectl get all
+        //             """
+        //         }
+        //     }
+        // }
     }
 }
