@@ -41,15 +41,15 @@ pipeline {
             }
         }
 
-        // stage('Kubectl check') {
-        //     steps {
-        //         dir(PROJECT_FOLDER_PATH) {
-        //             sh """
-        //             export KUBECONFIG=${KUBECONFIG}
-        //             kubectl get all
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Kubectl check') {
+            steps {
+                dir(PROJECT_FOLDER_PATH) {
+                    sh """
+                    export KUBECONFIG=${KUBECONFIG}
+                    kubectl get all
+                    """
+                }
+            }
+        }
     }
 }
