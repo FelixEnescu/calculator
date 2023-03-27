@@ -21,7 +21,7 @@ pipeline {
         KUBECONFIG = '/home/jenkins/.kube/config'
         DOCKER_REGISTRY = "ghcr.io/lodisav-devops"
         DOCKER_CRED = 'github_PAT'
-        TAG = "latest"
+        // TAG = "latest"
         GITHUB_REGISTRY_SECRET = "github-cred"        
     }
 
@@ -29,13 +29,13 @@ pipeline {
         stage('Prepare') {
             steps {
                 script {
-                    // println("BRANCH - ${env.BRANCH_NAME}")
-                    // println("PRID - ${env.CHANGE_ID}")
-                    // if (BRANCH_NAME == 'master') {
-                    //     TAG = 'latest'
-                    // } else {
-                    //     TAG = env.CHANGE_ID
-                    // }
+                    println("BRANCH - ${env.BRANCH_NAME}")
+                    println("PRID - ${env.CHANGE_ID}")
+                    if (BRANCH_NAME == 'master') {
+                        TAG = 'latest'
+                    } else {
+                        TAG = env.CHANGE_ID
+                    }
                     IMAGE_NAME = "calculator:${TAG}"
                     FINAL_IMAGE_NAME = "${DOCKER_REGISTRY}/${IMAGE_NAME}"
                     GITHUB_REGISTRY = "ghcr.io"
@@ -94,6 +94,7 @@ pipeline {
         }    
 
         stage('Kubectl check') {
+            when { expression { BRANCH_NAME == 'master'}}
             steps {
                 dir(APP_PATH) {
                     sh """
@@ -105,6 +106,7 @@ pipeline {
         }
 
         stage('Deploy') {
+            when { expression { BRANCH_NAME == 'master'}}
             steps {
                 dir(MANIFEST_PATH) {
                     sh """
@@ -115,9 +117,9 @@ pipeline {
                     sed -i "s/IMAGE_NAME/${IMAGE_NAME}/g" deployment.yaml
                     cat deployment.yaml
                     kubectl delete -f deployment.yaml
-                    sleep 15
+                    sleep 10
                     kubectl apply -f deployment.yaml
-                    sleep 30
+                    sleep 15
                     kubectl get all
                     """
                 }
