@@ -21,8 +21,7 @@ pipeline {
         KUBECONFIG = '/home/jenkins/.kube/config'
         DOCKER_REGISTRY = "ghcr.io/lodisav-devops"
         DOCKER_CRED = 'github_PAT'
-        // TAG = "latest"
-        GITHUB_REGISTRY_SECRET = "github-cred"        
+        GITHUB_REGISTRY_SECRET = "github-cred"
     }
 
     stages {
