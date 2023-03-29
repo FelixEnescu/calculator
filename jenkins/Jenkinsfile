@@ -55,6 +55,13 @@ pipeline {
                 // // recipientProviders: [developers(), requestor()],
                 // subject: 'Test Subject',
                 // to: 'lodisav.devops@gmail.com'
+            }
+            post{
+                always{
+                    mail to: "lodisav.devops@gmail.com",
+                    subject: "Test Email",
+                    body: "Test"
+                }
             }            
         }
 
