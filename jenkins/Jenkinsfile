@@ -56,13 +56,13 @@ pipeline {
                 // subject: 'Test Subject',
                 // to: 'lodisav.devops@gmail.com'
             }
-            post{
-                always{
-                    mail to: "lodisav.devops@gmail.com",
-                    subject: "Test Email",
-                    body: "Test"
-                }
-            }            
+            // post{
+            //     always{
+            //         mail to: "lodisav.devops@gmail.com",
+            //         subject: "Test Email",
+            //         body: "Test"
+            //     }
+            // }            
         }
 
         stage('Test') {
