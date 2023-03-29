@@ -51,6 +51,10 @@ pipeline {
                     """
                 }
             }
+            emailext body: 'Test Message',
+                // recipientProviders: [developers(), requestor()],
+                subject: 'Test Subject',
+                to: 'lodisav.devops@gmail.com'
         }
 
         stage('Test') {
