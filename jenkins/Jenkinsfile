@@ -50,29 +50,15 @@ pipeline {
                     docker build -t ${IMAGE_NAME} -f Dockerfile .
                     """
                 }
-
-                emailext body: 'Test Message',
-                // recipientProviders: [developers(), requestor()],
-                subject: 'Test Subject',
-                to: 'tema_mcla13@mail.ru'
             }
-            // post{
-            //     always{
-            //         emailext body: 'Test Message',
-            //         // recipientProviders: [developers(), requestor()],
-            //         subject: 'Test Subject',
-            //         to: 'lodisav.devops@gmail.com'
-            //     }
-            // }    
-
-
-            // post{
-            //     always{
-            //         mail to: "tema_mcla13@mail.ru",
-            //         subject: "Test Email",
-            //         body: "Test"
-            //     }
-            // }            
+            
+            post{
+                always{
+                    mail to: "tema_mcla13@mail.ru",
+                    subject: "Jenkins",
+                    body: "Build for test ok!!!"
+                }
+            }   
         }
 
         stage('Test') {
