@@ -93,7 +93,7 @@ pipeline {
             }
             post{
                 always{
-                    mail to: ${MAIL_BOX},
+                    mail to: "${MAIL_BOX}",
                     subject: "Jenkins - Create and push image",
                     body: "Image of your application (${FINAL_IMAGE_NAME}) has been pushed to the GitHub packages (username - ${GITHUB_NAME_REPO})"
                 }
@@ -133,7 +133,7 @@ pipeline {
             }
             post{
                 always{
-                    mail to: ${MAIL_BOX},
+                    mail to: "${MAIL_BOX}",
                     subject: "Jenkins - Deploy image",
                     body: "Image of your application (${FINAL_IMAGE_NAME}) has been deployed to the your infrastructure"
                 }
