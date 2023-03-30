@@ -39,6 +39,7 @@ pipeline {
                     FINAL_IMAGE_NAME = "${DOCKER_REGISTRY}/${IMAGE_NAME}"
                     GITHUB_REGISTRY = "ghcr.io"
                     GITHUB_NAME_REPO = "lodisav-devops"
+                    MAIL_BOX = "tema_mcla13@mail.ru"
                 }
             }
         }
@@ -50,15 +51,7 @@ pipeline {
                     docker build -t ${IMAGE_NAME} -f Dockerfile .
                     """
                 }
-            }
-            
-            post{
-                always{
-                    mail to: "tema_mcla13@mail.ru",
-                    subject: "Jenkins",
-                    body: "Build for test ok!!!"
-                }
-            }   
+            }            
         }
 
         stage('Test') {
@@ -98,7 +91,14 @@ pipeline {
                     """
                 }
             }
-        }    
+            post{
+                always{
+                    mail to: ${MAIL_BOX},
+                    subject: "Jenkins - Create and push image",
+                    body: "Image of your application (${FINAL_IMAGE_NAME}) has been pushed to the GitHub packages (username - ${GITHUB_NAME_REPO})"
+                }
+            }
+        }
 
         stage('Kubectl check') {
             when { expression { BRANCH_NAME == 'master'}}
@@ -129,6 +129,13 @@ pipeline {
                     sleep 15
                     kubectl get all
                     """
+                }
+            }
+            post{
+                always{
+                    mail to: ${MAIL_BOX},
+                    subject: "Jenkins - Deploy image",
+                    body: "Image of your application (${FINAL_IMAGE_NAME}) has been deployed to the your infrastructure"
                 }
             }
         }
