@@ -54,6 +54,16 @@ pipeline {
             }            
         }
 
+        stage('Linter check') {
+            steps {
+                dir(APP_PATH) {
+                    sh """
+                    docker run ${IMAGE_NAME} flake8
+                    """
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 dir(APP_PATH) {
@@ -68,7 +78,7 @@ pipeline {
             steps {   
                 script {
                     def apply = false
-                    input message: 'Confirm that the tests completed successfully?', ok: 'Apply'
+                    input message: 'Confirm that the tests and linter-check completed successfully?', ok: 'Apply'
                     apply = true
                     if (apply) {
                         dir(APP_PATH) {
