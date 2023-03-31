@@ -60,7 +60,10 @@ pipeline {
                     dir(APP_PATH) {
                         sh """
                         set +e
-                        docker run ${IMAGE_NAME} flake8
+                        docker run ${IMAGE_NAME} flake8 > ${IMAGE_NAME}.txt
+                        cat ${IMAGE_NAME}.txt
+                        rm ${IMAGE_NAME}.txt
+                        ls -la
                         """
                     }
                 }                
