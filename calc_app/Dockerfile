@@ -6,6 +6,7 @@ WORKDIR /app/
 RUN apt update \
     && pip install -r requirements.txt \
     && pip install nose \
-    && pip install pytest
+    && pip install pytest \
+    && pip install flake8
 
 CMD python app.py
