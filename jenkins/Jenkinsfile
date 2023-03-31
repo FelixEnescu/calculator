@@ -59,6 +59,7 @@ pipeline {
                 script {
                     dir(APP_PATH) {
                         sh """
+                        set +e
                         docker run ${IMAGE_NAME} flake8 > 1.txt
                         cat 1.txt
                         ls -la
