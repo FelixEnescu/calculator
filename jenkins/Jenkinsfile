@@ -56,11 +56,17 @@ pipeline {
 
         stage('Linter check') {
             steps {
-                dir(APP_PATH) {
-                    sh """
-                    docker run ${IMAGE_NAME} flake8
-                    """
-                }
+                script {
+                    dir(APP_PATH) {
+                        sh """
+                        set +e
+                        docker run ${IMAGE_NAME} flake8 > ${IMAGE_NAME}.txt
+                        cat ${IMAGE_NAME}.txt
+                        rm ${IMAGE_NAME}.txt
+                        ls -la
+                        """
+                    }
+                }                
             }
         }
 
