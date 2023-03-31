@@ -56,7 +56,7 @@ pipeline {
 
         stage('Linter check') {
             steps {
-                script{
+                script {
                     dir(APP_PATH) {
                         sh """
                         docker run ${IMAGE_NAME} flake8 > 1.txt
