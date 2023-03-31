@@ -47,7 +47,7 @@ def calculate():
         else:
             message = error.message
         rez = {
-            "status": "ERROR!!!",
+            "status": "ERROR",
             "message": message,
             "position": error.position
         }
