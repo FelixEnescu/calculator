@@ -37,7 +37,7 @@ def calculate():
         if calc.is_equation:
             value = "x = %s" % value
         rez = {
-            "status": "OK!!!",
+            "status": "OK",
             "value": value,
             "is_equation": calc.is_equation
         }
@@ -47,7 +47,7 @@ def calculate():
         else:
             message = error.message
         rez = {
-            "status": "ERROR!!!",
+            "status": "ERROR",
             "message": message,
             "position": error.position
         }
